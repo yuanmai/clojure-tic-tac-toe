@@ -3,7 +3,7 @@
         yuan.game.tic-tac-toe
         yuan.game.game-tree))
 
-(binding [*ai-level* 3
+(binding [*ai-level*   3
           *board-size* 3]
 
   (given #ttt [- - -
@@ -39,8 +39,8 @@
                - o x]
          (expect winner :x
                  legal-moves []
-                 #(score-ttt :o %) -1
-                 #(score-ttt :x %) 1))
+                 #(score-ttt :o %) (game-scores :lose)
+                 #(score-ttt :x %) (game-scores :win)))
 
   (expect :draw
           (winner #ttt [x o x

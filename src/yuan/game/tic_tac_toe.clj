@@ -3,7 +3,7 @@
   (:require [yuan.game.game-tree :as t]
             [yuan.game.alpha-beta-pruning :as ab]))
 
-(def ^:dynamic *board-size* 4)
+(defonce ^:dynamic *board-size* 3)
 (def k-in-a-row 3)
 
 (defn within? [yx]
@@ -94,8 +94,8 @@
 
 (defn read-board [board]
   "#ttt reader literal"
-  (let [cells (vec (map (comp name keyword)
-                        board))]
+  (let [cells (vec (map (comp keyword name)
+                         board))]
     (merge-with into
                 {:x #{}, :o #{}}
                 (dissoc (group-by #(get-in cells [%])
