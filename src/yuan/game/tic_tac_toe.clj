@@ -32,16 +32,15 @@
                                        (yx->cell yx)))))})
        (range 10)))
 
-(defn board-spec [key]
-  (key (nth boards-spec *board-size*)))
+(def board-spec (nth boards-spec *board-size*))
 
 (defn empty-cells
   [board]
-  (difference (board-spec :all-cells)
+  (difference (:all-cells board-spec)
               (apply union (vals board))))
 
 (defn neighbors [player board]
-  (let [n (board-spec :neighbor-cells)]
+  (let [n (:neighbor-cells board-spec)]
     (intersection (set (mapcat n (player board)))
                   (empty-cells board))))
 
@@ -62,7 +61,7 @@
     (letfn [(won? [player]
               (let [cells (player board)]
                 (and (seq cells)
-                     (some #(every? cells %) (board-spec :win-cells))
+                     (some #(every? cells %) (:win-cells board-spec))
                      player)))]
       (some won? (keys board)))))
 
@@ -99,13 +98,13 @@
     (merge-with into
                 {:x #{}, :o #{}}
                 (dissoc (group-by #(get-in cells [%])
-                                  (board-spec :all-cells))
+                                  (:all-cells board-spec))
                         :- nil))))
 
 (defn format-board [board]
   (let [marks  (mapcat #(interleave (% board) (repeat %))
                        (keys board))
-        marked (apply-assoc (board-spec :initial) marks)
+        marked (apply-assoc (:initial board-spec) marks)
         rows   (partition *board-size* (map name marked))]
     (str "#ttt ["
          (apply str (flatten (interpose2 "\n      " " " rows)))
